@@ -7,7 +7,7 @@ import {
 	Text,
 	VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useColorModeValue } from "./ui/color-mode";
 
 export type Message = { text: string; author: string };
@@ -37,6 +37,14 @@ export const Chat = ({
 		onSendMessage(message);
 		setMessage("");
 	};
+
+	const messagesEndRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	}, [messages]);
 
 	return (
 		<Box
@@ -101,6 +109,8 @@ export const Chat = ({
 								</Box>
 							</Flex>
 						))}
+
+						<div ref={messagesEndRef} />
 					</VStack>
 				</Box>
 
